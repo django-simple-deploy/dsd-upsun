@@ -22,13 +22,13 @@ from tests.integration_tests.conftest import (
 
 def test_settings(tmp_project):
     """Verify settings have been changed for Platform.sh."""
-    hf.check_reference_file(tmp_project, "blog/settings.py", "platform_sh")
+    hf.check_reference_file(tmp_project, "blog/settings.py", "dsd-platformsh")
 
 
 def test_requirements_txt(tmp_project, pkg_manager):
     """Test that the requirements.txt file is correct."""
     if pkg_manager == "req_txt":
-        hf.check_reference_file(tmp_project, "requirements.txt", "platform_sh")
+        hf.check_reference_file(tmp_project, "requirements.txt", "dsd-platformsh")
     elif pkg_manager in ["poetry", "pipenv"]:
         assert not Path("requirements.txt").exists()
 
@@ -38,7 +38,7 @@ def test_pyproject_toml(tmp_project, pkg_manager):
     if pkg_manager in ("req_txt", "pipenv"):
         assert not Path("pyproject.toml").exists()
     elif pkg_manager == "poetry":
-        hf.check_reference_file(tmp_project, "pyproject.toml", "platform_sh")
+        hf.check_reference_file(tmp_project, "pyproject.toml", "dsd-platformsh")
 
 
 def test_pipfile(tmp_project, pkg_manager):
@@ -46,12 +46,12 @@ def test_pipfile(tmp_project, pkg_manager):
     if pkg_manager in ("req_txt", "poetry"):
         assert not Path("Pipfile").exists()
     elif pkg_manager == "pipenv":
-        hf.check_reference_file(tmp_project, "Pipfile", "platform_sh")
+        hf.check_reference_file(tmp_project, "Pipfile", "dsd-platformsh")
 
 
 def test_gitignore(tmp_project):
     """Test that .gitignore has been modified correctly."""
-    hf.check_reference_file(tmp_project, ".gitignore", "platform_sh")
+    hf.check_reference_file(tmp_project, ".gitignore", "dsd-platformsh")
 
 
 # --- Test Platform.sh yaml files ---
@@ -60,25 +60,25 @@ def test_gitignore(tmp_project):
 def test_platform_app_yaml_file(tmp_project, pkg_manager):
     """Test for a correct .platform.app.yaml file."""
     if pkg_manager == "req_txt":
-        hf.check_reference_file(tmp_project, ".platform.app.yaml", "platform_sh")
+        hf.check_reference_file(tmp_project, ".platform.app.yaml", "dsd-platformsh")
     elif pkg_manager == "poetry":
         hf.check_reference_file(
             tmp_project,
             ".platform.app.yaml",
-            "platform_sh",
+            "dsd-platformsh",
             reference_filename="poetry.platform.app.yaml",
         )
     elif pkg_manager == "pipenv":
         hf.check_reference_file(
             tmp_project,
             ".platform.app.yaml",
-            "platform_sh",
+            "dsd-platformsh",
             reference_filename="pipenv.platform.app.yaml",
         )
 
 
 def test_services_yaml_file(tmp_project):
-    hf.check_reference_file(tmp_project, ".platform/services.yaml", "platform_sh")
+    hf.check_reference_file(tmp_project, ".platform/services.yaml", "dsd-platformsh")
 
 
 # --- Test logs ---
@@ -111,7 +111,9 @@ def test_log_dir(tmp_project):
     assert "INFO: Configuring project for deployment to Platform.sh..." in log_file_text
 
     assert "INFO: CLI args:" in log_file_text
-    assert "INFO: Deployment target: platform_sh" in log_file_text
+    assert "INFO:   platform: platform_sh" in log_file_text or "INFO:   platform: platformsh" in log_file_text
+    assert "INFO: Deployment target: platform_sh" in log_file_text or "INFO: Deployment target: platformsh" in log_file_text
+    assert "INFO:   Using plugin: dsd_platformsh" in log_file_text
     assert "INFO: Local project name: blog" in log_file_text
     assert "INFO: git status --porcelain" in log_file_text
     assert "INFO: ?? simple_deploy_logs/" in log_file_text
