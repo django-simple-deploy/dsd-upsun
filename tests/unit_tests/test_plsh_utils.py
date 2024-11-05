@@ -3,7 +3,7 @@
 from pathlib import Path
 from textwrap import dedent
 
-import simple_deploy.management.commands.platform_sh.utils as plsh_utils
+from dsd_platformsh import utils as plsh_utils
 
 
 def test_get_project_name():

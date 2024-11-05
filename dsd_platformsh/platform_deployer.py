@@ -12,9 +12,6 @@ from django.core.management.utils import get_random_secret_key
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-# from ..utils import plugin_utils
-# from ..utils.plugin_utils import sd_config
-# from ..utils.command_errors import SimpleDeployCommandError
 from simple_deploy.management.commands.utils import plugin_utils
 from simple_deploy.management.commands.utils.plugin_utils import sd_config
 from simple_deploy.management.commands.utils.command_errors import SimpleDeployCommandError
