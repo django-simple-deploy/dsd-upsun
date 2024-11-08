@@ -1,4 +1,2 @@
 include requirements.in
 recursive-include dsd_platformsh/templates *
-global-exclude *.pyc
-global-exclude *.DS_Store
