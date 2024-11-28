@@ -29,7 +29,6 @@ class PlatformDeployer:
     """
 
     def __init__(self):
-        """Establishes connection to existing simple_deploy command object."""
         self.templates_path = Path(__file__).parent / "templates"
 
     # --- Public methods ---

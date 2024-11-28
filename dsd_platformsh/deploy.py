@@ -1,8 +1,5 @@
 """Manages all platform.sh-specific aspects of the deployment process."""
 
-# Note: All public-facing references to platform.sh will include a dot, dash, or
-#  underscore, ie platform_sh.
-#  Internally, we won't use a space, ie platformsh or plsh.
 
 import simple_deploy
 # from .platform_deployer import PlatformDeployer
