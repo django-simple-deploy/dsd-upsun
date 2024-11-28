@@ -2,7 +2,6 @@
 
 
 import simple_deploy
-# from .platform_deployer import PlatformDeployer
 from dsd_platformsh.platform_deployer import PlatformDeployer
 from . import deploy_messages as platform_msgs
 
