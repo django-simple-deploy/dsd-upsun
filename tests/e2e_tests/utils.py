@@ -10,7 +10,7 @@ from tests.e2e_tests.utils.it_helper_functions import make_sp_call
 def check_logged_in():
     """Check that user is currently logged in to Platform.sh through CLI."""
     print("\nVerifying logged in to Platform.sh CLI...")
-    auth_info_output = make_sp_call("platform auth:info --quiet", capture_output=True)
+    auth_info_output = make_sp_call("platform auth:info --no-interaction", capture_output=True)
     if "LoginRequiredException" in auth_info_output.stderr.decode():
         msg = "\n----- Error: Not logged in through CLI -----"
         msg += "\nPlease log in to the Platform.sh CLI and then run the e2e test."
