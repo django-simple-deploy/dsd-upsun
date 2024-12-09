@@ -1,6 +1,22 @@
 Changelog: dsd-platformsh
 ===
 
+0.9 - Simplified usage from core
+---
+
+### 0.9.0
+
+#### External changes
+
+- Specifies Python 3.12 instead of 3.10, and Postgres 16 instead of 12.
+
+#### Internal changes
+
+- Simplified packaging config.
+- Updated requirements.
+- Updated test for authenticated CLI session for e2e tests.
+- Returns platform name to core.
+
 0.8 - First use of external plugins with django-simple-deploy
 ---
 
