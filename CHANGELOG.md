@@ -16,6 +16,7 @@ Changelog: dsd-platformsh
 - Updated requirements.
 - Updated test for authenticated CLI session for e2e tests.
 - Returns platform name to core.
+- Added required MANIFEST.in file back.
 
 0.8 - First use of external plugins with django-simple-deploy
 ---
