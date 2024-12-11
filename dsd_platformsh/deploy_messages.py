@@ -25,12 +25,12 @@ Okay, cancelling platform.sh deployment.
 cli_not_installed = """
 In order to deploy to Platform.sh, you need to install the Platform.sh CLI.
   See here: https://docs.platform.sh/gettingstarted/introduction/template/cli-requirements.html
-After installing the CLI, you can run simple_deploy again.
+After installing the CLI, you can run the deploy command again.
 """
 
 cli_logged_out = """
 You are currently logged out of the Platform.sh CLI. Please log in,
-  and then run simple_deploy again.
+  and then run the deploy command again.
 You can log in from  the command line:
   $ platform login
 """
@@ -43,17 +43,17 @@ overwrite this block, and everything that follows in settings.py?
 cant_overwrite_settings = """
 In order to configure the project for deployment, we need to write a Platform.sh-specific
 settings block. Please remove the current Platform.sh-specific settings, and then run
-simple_deploy again.
+the deploy command again.
 """
 
 no_project_name = """
 A Platform.sh project name could not be found.
 
-The simple_deploy command expects that you've already run `platform create`, or
+The deploy command expects that you've already run `platform create`, or
 associated the local project with an existing project on Platform.sh.
 
 If you haven't done so, run the `platform create` command and then run
-simple_deploy again. You can override this warning by using
+the deploy command again. You can override this warning by using
 the `--deployed-project-name` flag to specify the name you want to use for the
 project. This must match the name of your Platform.sh project.
 """
@@ -76,7 +76,7 @@ you'd like to use, and then try again.
 
 login_required = """
 You appear to be logged out of the Platform.sh CLI. Please run the 
-command `platform login`, and then run simple_deploy again.
+command `platform login`, and then run the deploy command again.
 
 You may be able to override this error by passing the `--deployed-project-name`
 flag.
@@ -87,7 +87,7 @@ An unknown error has occurred. Do you have the Platform.sh CLI installed?
 """
 
 may_configure = """
-You may want to re-run simple_deploy without the --automate-all flag.
+You may want to re-run the deploy command without the --automate-all flag.
 
 You will have to create the Platform.sh project yourself, but simple_deploy
 will do all of the necessary configuration for deployment.
