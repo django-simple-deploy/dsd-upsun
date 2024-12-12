@@ -2,6 +2,7 @@
 
 
 import simple_deploy
+
 from dsd_platformsh.platform_deployer import PlatformDeployer
 from .plugin_config import PluginConfig
 

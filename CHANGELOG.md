@@ -4,7 +4,7 @@ Changelog: dsd-platformsh
 0.9 - Simplified usage from core
 ---
 
-### 0.9.1
+### 0.9.1 (unreleased)
 
 #### External changes
 
@@ -14,6 +14,7 @@ Changelog: dsd-platformsh
 
 - Updated tests for Python 3.12 and Postgres 16.
 - Uses config instead of returning individual attributes to core.
+- Simplified packaging; all setup.cfg config moved to pyproject.toml.
 
 ### 0.9.0
 
