@@ -112,7 +112,10 @@ def test_log_dir(tmp_project):
 
     assert "INFO: CLI args:" in log_file_text
     # assert "INFO:   platform: platform_sh" in log_file_text or "INFO:   platform: platformsh" in log_file_text
-    assert "INFO: Deployment target: Platform.sh" in log_file_text or "INFO: Deployment target: Platform.sh" in log_file_text
+    assert (
+        "INFO: Deployment target: Platform.sh" in log_file_text
+        or "INFO: Deployment target: Platform.sh" in log_file_text
+    )
     assert "INFO:   Using plugin: dsd_platformsh" in log_file_text
     assert "INFO: Local project name: blog" in log_file_text
     assert "INFO: git status --porcelain" in log_file_text

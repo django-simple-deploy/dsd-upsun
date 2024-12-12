@@ -14,7 +14,9 @@ from django.utils.safestring import mark_safe
 
 from simple_deploy.management.commands.utils import plugin_utils
 from simple_deploy.management.commands.utils.plugin_utils import sd_config
-from simple_deploy.management.commands.utils.command_errors import SimpleDeployCommandError
+from simple_deploy.management.commands.utils.command_errors import (
+    SimpleDeployCommandError,
+)
 
 from . import deploy_messages as platform_msgs
 from . import utils as plsh_utils
