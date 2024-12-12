@@ -4,6 +4,17 @@ Changelog: dsd-platformsh
 0.9 - Simplified usage from core
 ---
 
+### 0.9.1
+
+#### External changes
+
+- Updated messaging to use deploy command instead of simple_deploy.
+
+#### Internal changes
+
+- Updated tests for Python 3.12 and Postgres 16.
+- Uses config instead of returning individual attributes to core.
+
 ### 0.9.0
 
 #### External changes
