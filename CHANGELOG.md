@@ -4,7 +4,7 @@ Changelog: dsd-platformsh
 0.9 - Simplified usage from core
 ---
 
-### 0.9.1 (unreleased)
+### 0.9.1
 
 #### External changes
 
