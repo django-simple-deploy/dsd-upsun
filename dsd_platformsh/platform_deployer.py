@@ -12,10 +12,10 @@ from django.core.management.utils import get_random_secret_key
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-from simple_deploy.management.commands.utils import plugin_utils
-from simple_deploy.management.commands.utils.plugin_utils import sd_config
-from simple_deploy.management.commands.utils.command_errors import (
-    SimpleDeployCommandError,
+from django_simple_deploy.management.commands.utils import plugin_utils
+from django_simple_deploy.management.commands.utils.plugin_utils import dsd_config
+from django_simple_deploy.management.commands.utils.command_errors import (
+    DSDCommandError,
 )
 
 from . import deploy_messages as platform_msgs
@@ -67,12 +67,12 @@ class PlatformDeployer:
             None
 
         Raises:
-            SimpleDeployCommandError: If we find any reason deployment won't work.
+            DSDCommandError: If we find any reason deployment won't work.
         """
-        if sd_config.unit_testing:
+        if dsd_config.unit_testing:
             # Unit tests don't use the CLI. Use the deployed project name that was
             # passed to the simple_deploy CLI.
-            self.deployed_project_name = sd_config.deployed_project_name
+            self.deployed_project_name = dsd_config.deployed_project_name
             plugin_utils.log_info(
                 f"Deployed project name: {self.deployed_project_name}"
             )
@@ -94,19 +94,19 @@ class PlatformDeployer:
             None: If creation of new project was successful.
 
         Raises:
-            SimpleDeployCommandError: If create command fails.
+            DSDCommandError: If create command fails.
 
         Note: create command outputs project id to stdout if known, all other
           output goes to stderr.
         """
-        if not sd_config.automate_all:
+        if not dsd_config.automate_all:
             return
 
         plugin_utils.write_output("  Running `platform create`...")
         plugin_utils.write_output(
             "    (Please be patient, this can take a few minutes."
         )
-        cmd = f"platform create --title { self.deployed_project_name } --org {self.org_name} --region {sd_config.region} --yes"
+        cmd = f"platform create --title { self.deployed_project_name } --org {self.org_name} --region {dsd_config.region} --yes"
 
         try:
             # Note: if user can't create a project the returncode will be 6, not 1.
@@ -117,7 +117,7 @@ class PlatformDeployer:
             plugin_utils.run_slow_command(cmd)
         except subprocess.CalledProcessError as e:
             error_msg = platform_msgs.unknown_create_error(e)
-            raise SimpleDeployCommandError(error_msg)
+            raise DSDCommandError(error_msg)
 
     def _modify_settings(self):
         """Add platformsh-specific settings.
@@ -132,23 +132,23 @@ class PlatformDeployer:
         """Add a .platform.app.yaml file."""
 
         # Build contents from template.
-        if sd_config.pkg_manager == "poetry":
+        if dsd_config.pkg_manager == "poetry":
             template_path = "poetry.platform.app.yaml"
-        elif sd_config.pkg_manager == "pipenv":
+        elif dsd_config.pkg_manager == "pipenv":
             template_path = "pipenv.platform.app.yaml"
         else:
             template_path = "platform.app.yaml"
         template_path = self.templates_path / template_path
 
         context = {
-            "project_name": sd_config.local_project_name,
+            "project_name": dsd_config.local_project_name,
             "deployed_project_name": self.deployed_project_name,
         }
 
         contents = plugin_utils.get_template_string(template_path, context)
 
         # Write file to project.
-        path = sd_config.project_root / ".platform.app.yaml"
+        path = dsd_config.project_root / ".platform.app.yaml"
         plugin_utils.add_file(path, contents)
 
     def _add_requirements(self):
@@ -158,7 +158,7 @@ class PlatformDeployer:
 
     def _add_platform_dir(self):
         """Add a .platform directory, if it doesn't already exist."""
-        self.platform_dir_path = sd_config.project_root / ".platform"
+        self.platform_dir_path = dsd_config.project_root / ".platform"
         plugin_utils.add_dir(self.platform_dir_path)
 
     def _add_services_yaml(self):
@@ -178,7 +178,7 @@ class PlatformDeployer:
         - Open project.
         """
         # Making this check here lets deploy() be cleaner.
-        if not sd_config.automate_all:
+        if not dsd_config.automate_all:
             return
 
         plugin_utils.commit_changes()
@@ -221,14 +221,14 @@ class PlatformDeployer:
         # - Describe ongoing approach of commit, push, migrate. Lots to consider
         #   when doing this on production app with users, make sure you learn.
 
-        if sd_config.automate_all:
+        if dsd_config.automate_all:
             msg = platform_msgs.success_msg_automate_all(self.deployed_url)
             plugin_utils.write_output(msg)
         else:
-            msg = platform_msgs.success_msg(sd_config.log_output)
+            msg = platform_msgs.success_msg(dsd_config.log_output)
             plugin_utils.write_output(msg)
 
-    # --- Helper methods for methods called from simple_deploy.py ---
+    # --- Helper methods for methods called from deploy.py ---
 
     def _check_plsh_settings(self):
         """Check to see if a Platform.sh settings block already exists."""
@@ -248,7 +248,7 @@ class PlatformDeployer:
         try:
             output_obj = plugin_utils.run_quick_command(cmd)
         except FileNotFoundError:
-            raise SimpleDeployCommandError(platform_msgs.cli_not_installed)
+            raise DSDCommandError(platform_msgs.cli_not_installed)
 
         plugin_utils.log_info(output_obj)
 
@@ -257,7 +257,7 @@ class PlatformDeployer:
         output_obj = plugin_utils.run_quick_command(cmd)
 
         if "Authentication is required." in output_obj.stderr.decode():
-            raise SimpleDeployCommandError(platform_msgs.cli_logged_out)
+            raise DSDCommandError(platform_msgs.cli_logged_out)
 
     def _get_platformsh_project_name(self):
         """Get the deployed project name.
@@ -272,15 +272,15 @@ class PlatformDeployer:
         Retuns:
             str: The deployed project name.
         Raises:
-            SimpleDeployCommandError: If deployed project name can't be found.
+            DSDCommandError: If deployed project name can't be found.
         """
         # If we're creating the project, we'll just use the startproject name.
-        if sd_config.automate_all:
-            return sd_config.local_project_name
+        if dsd_config.automate_all:
+            return dsd_config.local_project_name
 
         # Use the provided name if --deployed-project-name specified.
-        if sd_config.deployed_project_name:
-            return sd_config.deployed_project_name
+        if dsd_config.deployed_project_name:
+            return dsd_config.deployed_project_name
 
         # Use --yes flag to avoid interactive prompt hanging in background
         #   if the user is not currently logged in to the CLI.
@@ -299,15 +299,15 @@ class PlatformDeployer:
         if not output_str:
             output_str = output_obj.stderr.decode()
             if "LoginRequiredException" in output_str:
-                raise SimpleDeployCommandError(platform_msgs.login_required)
+                raise DSDCommandError(platform_msgs.login_required)
             elif "ProjectNotFoundException" in output_str:
-                raise SimpleDeployCommandError(platform_msgs.no_project_name)
+                raise DSDCommandError(platform_msgs.no_project_name)
             elif "RootNotFoundException" in output_str:
-                raise SimpleDeployCommandError(platform_msgs.no_project_name)
+                raise DSDCommandError(platform_msgs.no_project_name)
             else:
                 error_msg = platform_msgs.unknown_error
                 error_msg += platform_msgs.cli_not_installed
-                raise SimpleDeployCommandError(error_msg)
+                raise DSDCommandError(error_msg)
 
         # Pull deployed project name from output.
         lines = output_str.splitlines()
@@ -324,7 +324,7 @@ class PlatformDeployer:
             return project_name
 
         # Couldn't find a project name. Warn user, and tell them about override flag.
-        raise SimpleDeployCommandError(platform_msgs.no_project_name)
+        raise DSDCommandError(platform_msgs.no_project_name)
 
     def _get_org_name(self):
         """Get the organization name associated with the user's Platform.sh account.
@@ -336,11 +336,11 @@ class PlatformDeployer:
             str: org name
             None: if not using automate-all
         Raises:
-            SimpleDeployCommandError:
+            DSDCommandError:
             - if org name found, but not confirmed.
             - if org name not found
         """
-        if not sd_config.automate_all:
+        if not dsd_config.automate_all:
             return
 
         cmd = "platform organization:list --yes --format csv"
@@ -350,7 +350,7 @@ class PlatformDeployer:
 
         org_names = plsh_utils.get_org_names(output_str)
         if not org_names:
-            raise SimpleDeployCommandError(platform_msgs.org_not_found)
+            raise DSDCommandError(platform_msgs.org_not_found)
 
         if len(org_names) == 1:
             # Get permission to use this org.
@@ -385,17 +385,17 @@ class PlatformDeployer:
 
         Returns:
             True: if confirmed
-            SimpleDeployCommandError: if not confirmed
+            DSDCommandError: if not confirmed
         """
 
-        sd_config.stdout.write(platform_msgs.confirm_use_org(org_name))
+        dsd_config.stdout.write(platform_msgs.confirm_use_org(org_name))
         confirmed = plugin_utils.get_confirmation(skip_logging=True)
 
         if confirmed:
-            sd_config.stdout.write("  Okay, continuing with deployment.")
+            dsd_config.stdout.write("  Okay, continuing with deployment.")
             return True
         else:
             # Exit, with a message that configuration is still an option.
             msg = platform_msgs.cancel_plsh
             msg += platform_msgs.may_configure
-            raise SimpleDeployCommandError(msg)
+            raise DSDCommandError(msg)

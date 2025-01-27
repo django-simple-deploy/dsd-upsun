@@ -8,7 +8,7 @@ from django.conf import settings
 
 
 confirm_automate_all = """
-The --automate-all flag means simple_deploy will:
+The --automate-all flag means the deploy command will:
 - Run `platform create` for you, to create an empty Platform.sh project.
   - This will create a project in the us-3.platform.sh region. If you wish
     to use a different region, cancel this operation and use the --region flag.
@@ -89,7 +89,7 @@ An unknown error has occurred. Do you have the Platform.sh CLI installed?
 may_configure = """
 You may want to re-run the deploy command without the --automate-all flag.
 
-You will have to create the Platform.sh project yourself, but simple_deploy
+You will have to create the Platform.sh project yourself, but django-simple-deploy
 will do all of the necessary configuration for deployment.
 """
 
@@ -175,7 +175,7 @@ def success_msg(log_output=""):
     if log_output:
         msg += dedent(
             f"""
-        - You can find a full record of this configuration in the simple_deploy_logs directory.
+        - You can find a full record of this configuration in the dsd_logs directory.
         """
         )
 
