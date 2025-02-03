@@ -54,7 +54,7 @@ def test_deployment(tmp_project, cli_options, request):
         # `platform create` creates `.platform/local`. This is ignored on macOS,
         #   but not on Windows. There's a `.platform/local/.gitignore` file with a
         #   single forward slash in it. Does this ignore that directory on macOS,
-        #   but not on Windows? Committing here, so we got into running sd with a
+        #   but not on Windows? Committing here, so we go into running `deploy` with a
         #   clean `git status`.
         if os.name == "nt":
             it_utils.make_sp_call("git add .")

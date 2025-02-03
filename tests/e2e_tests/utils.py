@@ -30,9 +30,9 @@ def create_project():
     org_output = make_sp_call("platform org:info", capture_output=True).stdout.decode()
     org_id = re.search(r"([A-Z0-9]{26})", org_output).group(1)
     print(f"  Found Platform.sh organization id: {org_id}")
-    make_sp_call(
-        f"platform create --title my_blog_project --org {org_id} --region us-3.platform.sh --yes"
-    )
+    create_cmd = f"platform create --title my_blog_project --org {org_id} --region us-3.platform.sh --yes"
+
+    make_sp_call(create_cmd)
 
 
 def push_project():
