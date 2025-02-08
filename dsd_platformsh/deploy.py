@@ -1,6 +1,5 @@
 """Manages all platform.sh-specific aspects of the deployment process."""
 
-
 import django_simple_deploy
 
 from dsd_platformsh.platform_deployer import PlatformDeployer
