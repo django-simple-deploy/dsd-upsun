@@ -6,11 +6,11 @@ Changelog: dsd-platformsh
 
 The stable 1.0 release of core django-simple-deploy is now available, and this project is at 1.0 to match that.
 
-### (Unreleased)
+### 1.1.0
 
 #### External changes
 
-- 
+- Supports Wagtail projects. Builds ALLOWED_HOSTS if it doesn't exist, sets DJANGO_SETTINGS_MODULE env var when `settings/production.py` found.
 
 #### Internal changes
 
