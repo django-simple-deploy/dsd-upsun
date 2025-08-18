@@ -9,7 +9,11 @@ if os.environ.get("PLATFORM_APPLICATION_NAME"):
 
     config = Config()
 
-    ALLOWED_HOSTS.append("*")
+    try:
+        ALLOWED_HOSTS.append("*")
+    except NameError:
+        ALLOWED_HOSTS = ["*"]
+        
     DEBUG = False
 
     STATIC_URL = "/static/"

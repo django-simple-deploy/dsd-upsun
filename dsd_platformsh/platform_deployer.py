@@ -49,6 +49,7 @@ class PlatformDeployer:
         self._add_platform_app_yaml()
         self._add_platform_dir()
         self._add_services_yaml()
+        self._settings_env_var()
 
         self._conclude_automate_all()
         self._show_success_message()
@@ -169,6 +170,19 @@ class PlatformDeployer:
 
         path = self.platform_dir_path / "services.yaml"
         plugin_utils.add_file(path, contents)
+
+    def _settings_env_var(self):
+        """Set the DJANGO_SETTINGS_MODULE env var, if needed."""
+        # This is primarily for Wagtail projects, as signified by a settings/production.py file.
+        if dsd_config.settings_path.parts[-2:] == ("settings", "production.py"):
+            plugin_utils.write_output("  Setting DJANGO_SETTINGS_MODULE environment variable...")
+
+            # Need form mysite.settings.production
+            dotted_settings_path = ".".join(dsd_config.settings_path.parts[-3:]).removesuffix(".py")
+
+            cmd = f"platform variable:create --level environment --environment main --name DJANGO_SETTINGS_MODULE --value {dotted_settings_path} --no-interaction --visible-build true --prefix env"
+            output = plugin_utils.run_quick_command(cmd)
+            plugin_utils.write_output(output)
 
     def _conclude_automate_all(self):
         """Finish automating the push to Platform.sh.
