@@ -1,8 +1,8 @@
-"""Utilities specific to Platform.sh deployments."""
+"""Utilities specific to Upsun deployments."""
 
 
 def get_project_name(output_str):
-    """Get the project name from the output of `platform project:info`.
+    """Get the project name from the output of `upsun project:info`.
 
     Command is run with `--format csv` flag.
 
@@ -18,7 +18,7 @@ def get_project_name(output_str):
 
 
 def get_org_names(output_str):
-    """Get org names from output of `platform organization:list --yes --format csv`.
+    """Get org names from output of `upsun organization:list --yes --format csv`.
 
     Sample input:
         Name,Label,Owner email
