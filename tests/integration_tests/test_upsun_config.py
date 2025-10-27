@@ -1,4 +1,4 @@
-"""Integration tests for django-simple-deploy, targeting Platform.sh."""
+"""Integration tests for django-simple-deploy, targeting Upsun."""
 
 from pathlib import Path
 import subprocess
@@ -22,8 +22,8 @@ from tests.integration_tests.conftest import (
 
 
 def test_settings(tmp_project):
-    """Verify settings have been changed for Platform.sh."""
-    hf.check_reference_file(tmp_project, "blog/settings.py", "dsd-platformsh")
+    """Verify settings have been changed for Upsun."""
+    hf.check_reference_file(tmp_project, "blog/settings.py", "dsd-upsun")
 
 
 def test_requirements_txt(tmp_project, pkg_manager, tmp_path, dsd_version):
@@ -33,7 +33,7 @@ def test_requirements_txt(tmp_project, pkg_manager, tmp_path, dsd_version):
         hf.check_reference_file(
             tmp_project,
             "requirements.txt",
-            "dsd-platformsh",
+            "dsd-upsun",
             context=context,
             tmp_path=tmp_path,
         )
@@ -50,7 +50,7 @@ def test_pyproject_toml(tmp_project, pkg_manager, tmp_path, dsd_version):
         hf.check_reference_file(
             tmp_project,
             "pyproject.toml",
-            "dsd-platformsh",
+            "dsd-upsun",
             context=context,
             tmp_path=tmp_path,
         )
@@ -63,40 +63,40 @@ def test_pipfile(tmp_project, pkg_manager, tmp_path, dsd_version):
     elif pkg_manager == "pipenv":
         context = {"current-version": dsd_version}
         hf.check_reference_file(
-            tmp_project, "Pipfile", "dsd-platformsh", context=context, tmp_path=tmp_path
+            tmp_project, "Pipfile", "dsd-upsun", context=context, tmp_path=tmp_path
         )
 
 
 def test_gitignore(tmp_project):
     """Test that .gitignore has been modified correctly."""
-    hf.check_reference_file(tmp_project, ".gitignore", "dsd-platformsh")
+    hf.check_reference_file(tmp_project, ".gitignore", "dsd-upsun")
 
 
-# --- Test Platform.sh yaml files ---
+# --- Test Upsun yaml files ---
 
 
 def test_platform_app_yaml_file(tmp_project, pkg_manager):
     """Test for a correct .platform.app.yaml file."""
     if pkg_manager == "req_txt":
-        hf.check_reference_file(tmp_project, ".platform.app.yaml", "dsd-platformsh")
+        hf.check_reference_file(tmp_project, ".platform.app.yaml", "dsd-upsun")
     elif pkg_manager == "poetry":
         hf.check_reference_file(
             tmp_project,
             ".platform.app.yaml",
-            "dsd-platformsh",
+            "dsd-upsun",
             reference_filename="poetry.platform.app.yaml",
         )
     elif pkg_manager == "pipenv":
         hf.check_reference_file(
             tmp_project,
             ".platform.app.yaml",
-            "dsd-platformsh",
+            "dsd-upsun",
             reference_filename="pipenv.platform.app.yaml",
         )
 
 
 def test_services_yaml_file(tmp_project):
-    hf.check_reference_file(tmp_project, ".platform/services.yaml", "dsd-platformsh")
+    hf.check_reference_file(tmp_project, ".platform/services.yaml", "dsd-upsun")
 
 
 # --- Test logs ---
@@ -107,7 +107,7 @@ def test_log_dir(tmp_project):
     log_path = Path(tmp_project / "dsd_logs")
     assert log_path.exists()
 
-    # DEV: After implementing friendly summary for Platform.sh, this file
+    # DEV: After implementing friendly summary for Upsun, this file
     #   will need to be updated.
     # There should be exactly two log files.
     log_files = sorted(log_path.glob("*"))
@@ -126,22 +126,22 @@ def test_log_dir(tmp_project):
     # DEV: Update these for more platform-specific log messages.
     # Spot check for opening log messages.
     assert "INFO: Logging run of `manage.py deploy`..." in log_file_text
-    assert "INFO: Configuring project for deployment to Platform.sh..." in log_file_text
+    assert "INFO: Configuring project for deployment to Upsun..." in log_file_text
 
     assert "INFO: CLI args:" in log_file_text
-    # assert "INFO:   platform: platform_sh" in log_file_text or "INFO:   platform: platformsh" in log_file_text
+    # assert "INFO:   platform: platform_sh" in log_file_text or "INFO:   platform: Upsun" in log_file_text
     assert (
-        "INFO: Deployment target: Platform.sh" in log_file_text
-        or "INFO: Deployment target: Platform.sh" in log_file_text
+        "INFO: Deployment target: Upsun" in log_file_text
+        or "INFO: Deployment target: Upsun" in log_file_text
     )
-    assert "INFO:   Using plugin: dsd_platformsh" in log_file_text
+    assert "INFO:   Using plugin: dsd_upsun" in log_file_text
     assert "INFO: Local project name: blog" in log_file_text
     assert "INFO: git status --porcelain" in log_file_text
     assert "INFO: ?? dsd_logs/" in log_file_text
 
     # Spot check for success messages.
     assert (
-        "INFO: --- Your project is now configured for deployment on Platform.sh. ---"
+        "INFO: --- Your project is now configured for deployment on Upsun. ---"
         in log_file_text
     )
     assert "INFO: To deploy your project, you will need to:" in log_file_text
