@@ -1,8 +1,4 @@
-"""Manages all platform.sh-specific aspects of the deployment process."""
-
-# Note: All public-facing references to platform.sh will include a dot, dash, or
-#  underscore, ie platform_sh.
-#  Internally, we won't use a space, ie platformsh or plsh.
+"""Manages all Upsun-specific aspects of the deployment process."""
 
 import sys, os, subprocess, time
 from pathlib import Path
@@ -18,16 +14,16 @@ from django_simple_deploy.management.commands.utils.command_errors import (
     DSDCommandError,
 )
 
-from . import deploy_messages as platform_msgs
-from . import utils as plsh_utils
+from . import deploy_messages as upsun_msgs
+from . import utils as upsun_utils
 
 
 class PlatformDeployer:
-    """Perform the initial deployment to Platform.sh.
+    """Perform the initial deployment to Upsun.
 
     If --automate-all is used, carry out an actual deployment.
     If not, do all configuration work so the user only has to commit changes, and call
-    `platform push`.
+    `upsun push`.
     """
 
     def __init__(self):
@@ -38,7 +34,7 @@ class PlatformDeployer:
     def deploy(self, *args, **options):
         """Coordinate the overall configuration and deployment."""
         plugin_utils.write_output(
-            "\nConfiguring project for deployment to Platform.sh..."
+            "\nConfiguring project for deployment to Upsun..."
         )
 
         self._validate_platform()
@@ -58,7 +54,7 @@ class PlatformDeployer:
 
     def _validate_platform(self):
         """Make sure the local environment and project supports deployment to
-        Platform.sh.
+        Upsun.
 
         Make sure CLI is installed, and user is authenticated. Make sure necessary
         resources have been created and identified, and that we have the user's
@@ -79,10 +75,10 @@ class PlatformDeployer:
             )
             return
 
-        self._check_plsh_settings()
+        self._check_upsun_settings()
         self._validate_cli()
 
-        self.deployed_project_name = self._get_platformsh_project_name()
+        self.deployed_project_name = self._get_upsun_project_name()
         plugin_utils.log_info(f"Deployed project name: {self.deployed_project_name}")
 
         self.org_name = self._get_org_name()
@@ -103,11 +99,11 @@ class PlatformDeployer:
         if not dsd_config.automate_all:
             return
 
-        plugin_utils.write_output("  Running `platform create`...")
+        plugin_utils.write_output("  Running `upsun create`...")
         plugin_utils.write_output(
             "    (Please be patient, this can take a few minutes."
         )
-        cmd = f"platform create --title { self.deployed_project_name } --org {self.org_name} --region {dsd_config.region} --yes"
+        cmd = f"upsun create --title { self.deployed_project_name } --org {self.org_name} --region {dsd_config.region} --yes"
 
         try:
             # Note: if user can't create a project the returncode will be 6, not 1.
@@ -117,11 +113,11 @@ class PlatformDeployer:
             # output goes to stderr.
             plugin_utils.run_slow_command(cmd)
         except subprocess.CalledProcessError as e:
-            error_msg = platform_msgs.unknown_create_error(e)
+            error_msg = upsun_msgs.unknown_create_error(e)
             raise DSDCommandError(error_msg)
 
     def _modify_settings(self):
-        """Add platformsh-specific settings.
+        """Add upsun-specific settings.
 
         This settings block is currently the same for all users. The ALLOWED_HOSTS
         setting should be customized.
@@ -153,7 +149,7 @@ class PlatformDeployer:
         plugin_utils.add_file(path, contents)
 
     def _add_requirements(self):
-        """Add requirements for Platform.sh."""
+        """Add requirements for Upsun."""
         requirements = ["platformshconfig", "gunicorn", "psycopg2"]
         plugin_utils.add_packages(requirements)
 
@@ -180,15 +176,15 @@ class PlatformDeployer:
             # Need form mysite.settings.production
             dotted_settings_path = ".".join(dsd_config.settings_path.parts[-3:]).removesuffix(".py")
 
-            cmd = f"platform variable:create --level environment --environment main --name DJANGO_SETTINGS_MODULE --value {dotted_settings_path} --no-interaction --visible-build true --prefix env"
+            cmd = f"upsun variable:create --level environment --environment main --name DJANGO_SETTINGS_MODULE --value {dotted_settings_path} --no-interaction --visible-build true --prefix env"
             output = plugin_utils.run_quick_command(cmd)
             plugin_utils.write_output(output)
 
     def _conclude_automate_all(self):
-        """Finish automating the push to Platform.sh.
+        """Finish automating the push to Upsun.
 
         - Commit all changes.
-        - Call `platform push`.
+        - Call `upsun push`.
         - Open project.
         """
         # Making this check here lets deploy() be cleaner.
@@ -198,7 +194,7 @@ class PlatformDeployer:
         plugin_utils.commit_changes()
 
         # Push project.
-        plugin_utils.write_output("  Pushing to Platform.sh...")
+        plugin_utils.write_output("  Pushing to Upsun...")
 
         # Pause to make sure project that was just created can be used.
         plugin_utils.write_output(
@@ -207,19 +203,19 @@ class PlatformDeployer:
         time.sleep(10)
 
         # Use run_slow_command(), to stream output as it runs.
-        cmd = "platform push --yes"
+        cmd = "upsun push --yes"
         plugin_utils.run_slow_command(cmd)
 
         # Open project.
         plugin_utils.write_output("  Opening deployed app in a new browser tab...")
-        cmd = "platform url --yes"
+        cmd = "upsun url --yes"
         output = plugin_utils.run_quick_command(cmd)
         plugin_utils.write_output(output)
 
         # Get url of deployed project.
         #   This can be done with an re, but there's one line of output with
         #   a url, so finding that line is simpler.
-        # DEV: Move this to a utility, and write a test against standard Platform.sh
+        # DEV: Move this to a utility, and write a test against standard Upsun
         # output.
         self.deployed_url = ""
         for line in output.stdout.decode().split("\n"):
@@ -236,48 +232,48 @@ class PlatformDeployer:
         #   when doing this on production app with users, make sure you learn.
 
         if dsd_config.automate_all:
-            msg = platform_msgs.success_msg_automate_all(self.deployed_url)
+            msg = upsun_msgs.success_msg_automate_all(self.deployed_url)
             plugin_utils.write_output(msg)
         else:
-            msg = platform_msgs.success_msg(dsd_config.log_output)
+            msg = upsun_msgs.success_msg(dsd_config.log_output)
             plugin_utils.write_output(msg)
 
     # --- Helper methods for methods called from deploy.py ---
 
-    def _check_plsh_settings(self):
-        """Check to see if a Platform.sh settings block already exists."""
-        start_line = "# Platform.sh settings."
+    def _check_upsun_settings(self):
+        """Check to see if an Upsun settings block already exists."""
+        start_line = "# Upsun settings."
         plugin_utils.check_settings(
-            "Platform.sh",
+            "Upsun",
             start_line,
-            platform_msgs.plsh_settings_found,
-            platform_msgs.cant_overwrite_settings,
+            upsun_msgs.upsun_settings_found,
+            upsun_msgs.cant_overwrite_settings,
         )
 
     def _validate_cli(self):
-        """Make sure the Platform.sh CLI is installed, and user is authenticated."""
-        cmd = "platform --version"
+        """Make sure the Upsun CLI is installed, and user is authenticated."""
+        cmd = "upsun --version"
 
         # This generates a FileNotFoundError on Ubuntu if the CLI is not installed.
         try:
             output_obj = plugin_utils.run_quick_command(cmd)
         except FileNotFoundError:
-            raise DSDCommandError(platform_msgs.cli_not_installed)
+            raise DSDCommandError(upsun_msgs.cli_not_installed)
 
         plugin_utils.log_info(output_obj)
 
         # Check that the user is authenticated.
-        cmd = "platform auth:info --no-interaction"
+        cmd = "upsun auth:info --no-interaction"
         output_obj = plugin_utils.run_quick_command(cmd)
 
         if "Authentication is required." in output_obj.stderr.decode():
-            raise DSDCommandError(platform_msgs.cli_logged_out)
+            raise DSDCommandError(upsun_msgs.cli_logged_out)
 
-    def _get_platformsh_project_name(self):
+    def _get_upsun_project_name(self):
         """Get the deployed project name.
 
         If using automate_all, we'll set this. Otherwise, we're looking for the name
-        that was given in the `platform create` command.
+        that was given in the `upsun create` command.
         - Try to get this from `project:info`.
         - If can't get project name:
           - Exit with warning, and inform user of --deployed-project-name
@@ -298,7 +294,7 @@ class PlatformDeployer:
 
         # Use --yes flag to avoid interactive prompt hanging in background
         #   if the user is not currently logged in to the CLI.
-        cmd = "platform project:info --yes --format csv"
+        cmd = "upsun project:info --yes --format csv"
         output_obj = plugin_utils.run_quick_command(cmd)
         output_str = output_obj.stdout.decode()
 
@@ -313,14 +309,14 @@ class PlatformDeployer:
         if not output_str:
             output_str = output_obj.stderr.decode()
             if "LoginRequiredException" in output_str:
-                raise DSDCommandError(platform_msgs.login_required)
+                raise DSDCommandError(upsun_msgs.login_required)
             elif "ProjectNotFoundException" in output_str:
-                raise DSDCommandError(platform_msgs.no_project_name)
+                raise DSDCommandError(upsun_msgs.no_project_name)
             elif "RootNotFoundException" in output_str:
-                raise DSDCommandError(platform_msgs.no_project_name)
+                raise DSDCommandError(upsun_msgs.no_project_name)
             else:
-                error_msg = platform_msgs.unknown_error
-                error_msg += platform_msgs.cli_not_installed
+                error_msg = upsun_msgs.unknown_error
+                error_msg += upsun_msgs.cli_not_installed
                 raise DSDCommandError(error_msg)
 
         # Pull deployed project name from output.
@@ -328,7 +324,7 @@ class PlatformDeployer:
         title_line = [line for line in lines if "title," in line][0]
         # Assume first project is one to use.
         project_name = title_line.split(",")[1].strip()
-        project_name = plsh_utils.get_project_name(output_str)
+        project_name = upsun_utils.get_project_name(output_str)
 
         # Project names can only have lowercase alphanumeric characters.
         # See: https://github.com/ehmatthes/django-simple-deploy/issues/323
@@ -338,10 +334,10 @@ class PlatformDeployer:
             return project_name
 
         # Couldn't find a project name. Warn user, and tell them about override flag.
-        raise DSDCommandError(platform_msgs.no_project_name)
+        raise DSDCommandError(upsun_msgs.no_project_name)
 
     def _get_org_name(self):
-        """Get the organization name associated with the user's Platform.sh account.
+        """Get the organization name associated with the user's Upsun account.
 
         This is needed for creating a project using automate_all.
         Confirm that it's okay to use this org.
@@ -357,14 +353,14 @@ class PlatformDeployer:
         if not dsd_config.automate_all:
             return
 
-        cmd = "platform organization:list --yes --format csv"
+        cmd = "upsun organization:list --yes --format csv"
         output_obj = plugin_utils.run_quick_command(cmd)
         output_str = output_obj.stdout.decode()
         plugin_utils.log_info(output_str)
 
-        org_names = plsh_utils.get_org_names(output_str)
+        org_names = upsun_utils.get_org_names(output_str)
         if not org_names:
-            raise DSDCommandError(platform_msgs.org_not_found)
+            raise DSDCommandError(upsun_msgs.org_not_found)
 
         if len(org_names) == 1:
             # Get permission to use this org.
@@ -373,7 +369,7 @@ class PlatformDeployer:
                 return org_name
 
         # Show all orgs, ask user to make selection.
-        prompt = "\n*** Found multiple orgs on Platform.sh. ***"
+        prompt = "\n*** Found multiple orgs on Upsun. ***"
         for index, name in enumerate(org_names):
             prompt += f"\n  {index}: {name}"
         prompt += "\nWhich org would you like to use? "
@@ -384,7 +380,7 @@ class PlatformDeployer:
         confirmed = False
         while not confirmed:
             selection = plugin_utils.get_numbered_choice(
-                prompt, valid_choices, platform_msgs.no_org_available
+                prompt, valid_choices, upsun_msgs.no_org_available
             )
             selected_org = org_names[selection]
 
@@ -402,7 +398,7 @@ class PlatformDeployer:
             DSDCommandError: if not confirmed
         """
 
-        dsd_config.stdout.write(platform_msgs.confirm_use_org(org_name))
+        dsd_config.stdout.write(upsun_msgs.confirm_use_org(org_name))
         confirmed = plugin_utils.get_confirmation(skip_logging=True)
 
         if confirmed:
@@ -410,6 +406,6 @@ class PlatformDeployer:
             return True
         else:
             # Exit, with a message that configuration is still an option.
-            msg = platform_msgs.cancel_plsh
-            msg += platform_msgs.may_configure
+            msg = upsun_msgs.cancel_upsun
+            msg += upsun_msgs.may_configure
             raise DSDCommandError(msg)

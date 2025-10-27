@@ -2,7 +2,7 @@
 
 import django_simple_deploy
 
-from dsd_platformsh.platform_deployer import PlatformDeployer
+from dsd_upsun.platform_deployer import PlatformDeployer
 from .plugin_config import PluginConfig
 
 

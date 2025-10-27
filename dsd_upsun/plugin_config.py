@@ -1,6 +1,6 @@
 """Config class for plugin information shared with core."""
 
-from . import deploy_messages as platform_msgs
+from . import deploy_messages as upsun_msgs
 
 
 class PluginConfig:
@@ -23,5 +23,5 @@ class PluginConfig:
 
     def __init__(self):
         self.automate_all_supported = True
-        self.confirm_automate_all_msg = platform_msgs.confirm_automate_all
-        self.platform_name = "Platform.sh"
+        self.confirm_automate_all_msg = upsun_msgs.confirm_automate_all
+        self.platform_name = "Upsun"
