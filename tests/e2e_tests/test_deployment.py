@@ -23,24 +23,24 @@ def test_dummy(tmp_project):
 # Skip this test and enable test_dummy() to speed up testing of setup steps.
 # @pytest.mark.skip
 def test_deployment(tmp_project, cli_options, request):
-    """Test the full, live deployment process to Platform.sh.
+    """Test the full, live deployment process to Upsun.
 
     Note: On Windows, this must be run from a bash terminal, such as Git Bash,
         or through WSL.
       On Windows you may see a popup about authenticating an RSA key fingerprint. Sometimes this
-        is hidden by a console window. Look for that confirmation if a platform command
+        is hidden by a console window. Look for that confirmation if a upsun command
         hangs. Enter 'yes' (not just 'y') into that box if it appears. It obscures what
         you type with asterisks, but it's just looking for 'yes'.
       Confirming the RSA key in the popup generates a `.ssh/known_hosts` file, which then allows
         you to use non-bash shells. That behavior is *really* confusing, though. I don't think the
-        platform.sh CLI was designed to be used on native Windows at all. :/
-      Also, sometimes helps to run `platform auth:logout` followed by `platform auth:browser-login`.
+        Upsun CLI was designed to be used on native Windows at all. :/
+      Also, sometimes helps to run `upsun auth:logout` followed by `upsun auth:browser-login`.
     """
 
     # Cache the platform name for teardown work.
-    request.config.cache.set("platform", "platform_sh")
+    request.config.cache.set("platform", "upsun")
 
-    print("\nTesting deployment to Platform.sh using the following options:")
+    print("\nTesting deployment to Upsun using the following options:")
     print(cli_options.__dict__)
 
     platform_utils.check_logged_in()
@@ -51,17 +51,17 @@ def test_deployment(tmp_project, cli_options, request):
     if not cli_options.automate_all:
         platform_utils.create_project()
 
-        # `platform create` creates `.platform/local`. This is ignored on macOS,
+        # `upsun create` creates `.platform/local`. This is ignored on macOS,
         #   but not on Windows. There's a `.platform/local/.gitignore` file with a
         #   single forward slash in it. Does this ignore that directory on macOS,
         #   but not on Windows? Committing here, so we go into running `deploy` with a
         #   clean `git status`.
         if os.name == "nt":
             it_utils.make_sp_call("git add .")
-            it_utils.make_sp_call("git commit -am 'Created platform_sh project.'")
+            it_utils.make_sp_call("git commit -am 'Created Upsun project.'")
 
     # Run simple_deploy against the test project.
-    it_utils.run_simple_deploy(python_cmd, "platform_sh", cli_options.automate_all)
+    it_utils.run_simple_deploy(python_cmd, "upsun", cli_options.automate_all)
 
     # If testing Pipenv, lock after adding new packages.
     if cli_options.pkg_manager == "pipenv":

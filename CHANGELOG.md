@@ -6,6 +6,20 @@ Changelog: dsd-platformsh
 
 The stable 1.0 release of core django-simple-deploy is now available, and this project is at 1.0 to match that.
 
+### 1.2.0 (unreleased)
+
+#### External changes
+
+- Change name of plugin to dsd-upsun.
+- Update most names to Upsun.
+- Update links to current Upsun docs.
+
+#### Internal changes
+
+- Most names are converted from Platform.sh to Upsun.
+- Some names are still Platform.sh-based, where Upsun has continued to use that name.
+
+
 ### 1.1.0
 
 #### External changes

@@ -1,4 +1,4 @@
-"""Helper functions specific to Platform.sh."""
+"""Helper functions specific to Upsun."""
 
 import re, time
 
@@ -8,29 +8,29 @@ from tests.e2e_tests.utils.it_helper_functions import make_sp_call
 
 
 def check_logged_in():
-    """Check that user is currently logged in to Platform.sh through CLI."""
-    print("\nVerifying logged in to Platform.sh CLI...")
+    """Check that user is currently logged in to Upsun through CLI."""
+    print("\nVerifying logged in to Upsun CLI...")
     auth_info_output = make_sp_call(
-        "platform auth:info --no-interaction", capture_output=True
+        "upsun auth:info --no-interaction", capture_output=True
     )
     if "LoginRequiredException" in auth_info_output.stderr.decode():
         msg = "\n----- Error: Not logged in through CLI -----"
-        msg += "\nPlease log in to the Platform.sh CLI and then run the e2e test."
-        msg += "\n  You can log in with the command: platform login"
+        msg += "\nPlease log in to the Upsun CLI and then run the e2e test."
+        msg += "\n  You can log in with the command: upsun login"
         msg += "\n-----\n"
         print(msg)
 
-        exit_msg = "Please run `platform login` and then run e2e tests."
+        exit_msg = "Please run `upsun login` and then run e2e tests."
         pytest.exit(exit_msg)
 
 
 def create_project():
-    """Create a project on Platform.sh."""
-    print("\n\nCreating a project on Platform.sh...")
-    org_output = make_sp_call("platform org:info", capture_output=True).stdout.decode()
+    """Create a project on Upsun."""
+    print("\n\nCreating a project on Upsun...")
+    org_output = make_sp_call("upsun org:info", capture_output=True).stdout.decode()
     org_id = re.search(r"([A-Z0-9]{26})", org_output).group(1)
-    print(f"  Found Platform.sh organization id: {org_id}")
-    create_cmd = f"platform create --title my_blog_project --org {org_id} --region us-3.platform.sh --yes"
+    print(f"  Found Upsun organization id: {org_id}")
+    create_cmd = f"upsun create --title my_blog_project --org {org_id} --region us-3.platform.sh --yes"
 
     make_sp_call(create_cmd)
 
@@ -40,16 +40,16 @@ def push_project():
     # Pause before making push, otherwise project resources may not be available.
     time.sleep(30)
 
-    print("Pushing to Platform.sh...")
-    make_sp_call("platform push --yes")
+    print("Pushing to Upsun...")
+    make_sp_call("upsun push --yes")
 
     project_url = (
-        make_sp_call("platform url --yes", capture_output=True).stdout.decode().strip()
+        make_sp_call("upsun url --yes", capture_output=True).stdout.decode().strip()
     )
     print(f" Project URL: {project_url}")
 
     project_info = make_sp_call(
-        "platform project:info", capture_output=True
+        "upsun project:info", capture_output=True
     ).stdout.decode()
     project_id = re.search(r"\| id             \| ([a-z0-9]{13})", project_info).group(
         1
@@ -62,7 +62,7 @@ def push_project():
 def get_project_url_id():
     """Get project URL and id of a deployed project."""
     project_info = make_sp_call(
-        "platform project:info", capture_output=True
+        "upsun project:info", capture_output=True
     ).stdout.decode()
     project_id = re.search(r"\| id             \| ([a-z0-9]{13})", project_info).group(
         1
@@ -70,7 +70,7 @@ def get_project_url_id():
     print(f"  Found project id: {project_id}")
 
     project_url = (
-        make_sp_call("platform url --yes", capture_output=True).stdout.decode().strip()
+        make_sp_call("upsun url --yes", capture_output=True).stdout.decode().strip()
     )
     print(f" Project URL: {project_url}")
 
@@ -85,5 +85,5 @@ def destroy_project(request):
     if not project_id:
         print("  No project id found; can't destroy any remote resources.")
 
-    print("  Destroying Platform.sh project...")
-    make_sp_call(f"platform project:delete --project {project_id} --yes")
+    print("  Destroying Upsun project...")
+    make_sp_call(f"upsun project:delete --project {project_id} --yes")

@@ -1,13 +1,13 @@
 # This file describes an application. You can have multiple applications
 # in the same project.
 #
-# See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
+# See https://fixed.docs.upsun.com/create-apps.html
 
 # The name of this app. Must be unique within a project.
 name: '{{ deployed_project_name }}'
 
 # The runtime the application uses.
-type: 'python:3.10'
+type: 'python:3.12'
 
 # The relationships of the application with services or other applications.
 #
@@ -20,12 +20,12 @@ relationships:
 # The configuration of app when it is exposed to the web.
 web:
     # Whether your app should speak to the webserver via TCP or Unix socket
-    # https://docs.platform.sh/configuration/app-containers.html#upstream
+    # https://fixed.docs.upsun.com/guides/django/deploy/configure.html#how-to-start-your-app
     upstream:
         socket_family: unix
     # Commands are run once after deployment to start the application process.
     commands:
-        start: "pipenv run gunicorn -w 4 -b unix:$SOCKET {{ project_name }}.wsgi:application"
+        start: "gunicorn -w 4 -b unix:$SOCKET {{ project_name }}.wsgi:application"
     locations:
         "/":
             passthru: true
@@ -51,12 +51,10 @@ hooks:
   #      Also, may want to split requirements into requirements.txt and requirements_remote.txt.
   build: |
     pip install --upgrade pip
-    pip install pipenv
-    pipenv install
+    pip install -r requirements.txt
 
     mkdir logs
-    pipenv run python manage.py collectstatic
+    python manage.py collectstatic
     rm -rf logs
   deploy: |
-    pipenv run python manage.py migrate
-    
+    python manage.py migrate

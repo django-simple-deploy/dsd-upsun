@@ -133,11 +133,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "users:login"
 
 
-# Platform.sh settings.
+# Upsun settings.
 import os
 
 if os.environ.get("PLATFORM_APPLICATION_NAME"):
-    # Import some Platform.sh settings from the environment.
+    # Import some Upsun settings from the environment.
     from platformshconfig import Config
 
     config = Config()
