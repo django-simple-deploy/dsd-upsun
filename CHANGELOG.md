@@ -1,116 +1,13 @@
-Changelog: dsd-platformsh
+Changelog: dsd-upsun
 ===
 
-1.0 - Stable release of core django-simple-deploy
----
-
-The stable 1.0 release of core django-simple-deploy is now available, and this project is at 1.0 to match that.
-
-### 1.2.0 (unreleased)
+### 0.1.0
 
 #### External changes
 
-- Change name of plugin to dsd-upsun.
-- Update most names to Upsun.
-- Update links to current Upsun docs.
+- This is a port of the dsd-platformsh plugin, which is being deprecated as Platform.sh has rebranded to Upsun.
 
 #### Internal changes
 
 - Most names are converted from Platform.sh to Upsun.
 - Some names are still Platform.sh-based, where Upsun has continued to use that name.
-
-
-### 1.1.0
-
-#### External changes
-
-- Supports Wagtail projects. Builds ALLOWED_HOSTS if it doesn't exist, sets DJANGO_SETTINGS_MODULE env var when `settings/production.py` found.
-
-#### Internal changes
-
-- Update requirements; remove unneeded requirements.in file.
-
-### 1.0.0
-
-#### External changes
-
-- NA
-
-#### Internal changes
-
-- Updated requirements.txt, for dev work.
-- Add dependabot config.
-  - Daily for main requirements.
-  - Monthly for tests/, until tests refactored to pull version from sample_project/.
-
-0.9 - Simplified usage from core
----
-
-### 0.9.3 (skipping 0.9.2 to match pre-1.0 version of django-simple-deploy)
-
-#### External changes
-
-- Updated to match core app name change from `simple_deploy` to `django-simple-deploy`.
-
-#### Internal changes
-
-- Minor naming changes to make project consistent with current names in core.
-
-### 0.9.1
-
-#### External changes
-
-- Updated messaging to use deploy command instead of simple_deploy.
-
-#### Internal changes
-
-- Updated tests for Python 3.12 and Postgres 16.
-- Uses config instead of returning individual attributes to core.
-- Simplified packaging; all setup.cfg config moved to pyproject.toml.
-
-### 0.9.0
-
-#### External changes
-
-- Specifies Python 3.12 instead of 3.10, and Postgres 16 instead of 12.
-
-#### Internal changes
-
-- Simplified packaging config.
-- Updated requirements.
-- Updated test for authenticated CLI session for e2e tests.
-- Returns platform name to core.
-- Added required MANIFEST.in file back.
-
-0.8 - First use of external plugins with django-simple-deploy
----
-
-### 0.8.2
-
-#### External changes
-
-- None
-
-#### Internal changes
-
-- Requires django-simple-deploy. This is more important for non-default plugins, but it means you can just install the plugin without having to also explicitly install django-simple-deploy.
-
-### 0.8.1
-
-#### External changes
-
-- Bugfix: Includes templates dir in package.
-
-#### Internal changes
-
-- None
-
-### 0.8.0
-
-#### External changes
-
-- Initial release.
-
-#### Internal changes
-
-- Initial release.
