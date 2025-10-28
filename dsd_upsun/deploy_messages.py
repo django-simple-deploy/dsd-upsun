@@ -12,7 +12,8 @@ The --automate-all flag means the deploy command will:
 - Run `upsun create` for you, to create an empty Upsun project.
   - This will create a project in the us-3.platform.sh region. If you wish
     to use a different region, cancel this operation and use the --region flag.
-  - You can see a list of all regions by running `upsun help project:create`
+  - You can see a list of all regions at:
+    https://docs.upsun.com/development/regions.html#region-location
 - Commit all changes to your project that are necessary for deployment.
 - Push these changes to Upsun.
 - Open your deployed project in a new browser tab.
