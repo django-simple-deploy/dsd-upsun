@@ -1,4 +1,4 @@
-"""Manages all platform.sh-specific aspects of the deployment process."""
+"""Manages all Upsun-specific aspects of the deployment process."""
 
 import django_simple_deploy
 
