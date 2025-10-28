@@ -163,13 +163,13 @@ def success_msg(log_output=""):
             $ git add .
             $ git commit -am "Configured project for deployment."
         - Push your project to Upsun' servers:
-            $ platform push
+            $ upsun push
         - Open your project:
-            $ platform url    
+            $ upsun url    
         - As you develop your project further:
             - Make local changes
             - Commit your local changes
-            - Run `platform push`
+            - Run `upsun push`
     """
     )
 
@@ -195,7 +195,7 @@ def success_msg_automate_all(deployed_url):
         - You can also visit your project at {deployed_url}
 
         If you make further changes and want to push them to Upsun,
-        commit your changes and then run `platform push`.
+        commit your changes and then run `upsun push`.
 
         Also, if you haven't already done so you should review the
         documentation for Python deployments on Upsun at:

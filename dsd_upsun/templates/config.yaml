@@ -17,6 +17,12 @@ type: 'python:3.12'
 relationships:
     database: "db:postgresql"
 
+# Configuration for all services within the environment.
+services:
+    db:
+        type: postgresql:16
+        disk: 1024
+
 # The configuration of app when it is exposed to the web.
 web:
     # Whether your app should speak to the webserver via TCP or Unix socket
