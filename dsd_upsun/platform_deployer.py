@@ -44,7 +44,6 @@ class PlatformDeployer:
         self._add_requirements()
         self._add_upsun_dir()
         self._add_config_yaml()
-        self._add_services_yaml()
         self._settings_env_var()
 
         self._conclude_automate_all()
@@ -125,29 +124,6 @@ class PlatformDeployer:
         template_path = self.templates_path / "settings.py"
         plugin_utils.modify_settings_file(template_path)
 
-    # def _add_platform_app_yaml(self):
-    #     """Add a .platform.app.yaml file."""
-
-    #     # Build contents from template.
-    #     if dsd_config.pkg_manager == "poetry":
-    #         template_path = "poetry.platform.app.yaml"
-    #     elif dsd_config.pkg_manager == "pipenv":
-    #         template_path = "pipenv.platform.app.yaml"
-    #     else:
-    #         template_path = "platform.app.yaml"
-    #     template_path = self.templates_path / template_path
-
-    #     context = {
-    #         "project_name": dsd_config.local_project_name,
-    #         "deployed_project_name": self.deployed_project_name,
-    #     }
-
-    #     contents = plugin_utils.get_template_string(template_path, context)
-
-    #     # Write file to project.
-    #     path = dsd_config.project_root / ".platform.app.yaml"
-    #     plugin_utils.add_file(path, contents)
-
     def _add_config_yaml(self):
         """Add a .upsun/config.yaml file."""
 
@@ -180,15 +156,6 @@ class PlatformDeployer:
         """Add a .upsun directory, if it doesn't already exist."""
         self.upsun_dir_path = dsd_config.project_root / ".upsun"
         plugin_utils.add_dir(self.upsun_dir_path)
-
-    def _add_services_yaml(self):
-        """Add the .platform/services.yaml file."""
-
-        template_path = self.templates_path / "services.yaml"
-        contents = plugin_utils.get_template_string(template_path, context=None)
-
-        path = self.upsun_dir_path / "services.yaml"
-        plugin_utils.add_file(path, contents)
 
     def _settings_env_var(self):
         """Set the DJANGO_SETTINGS_MODULE env var, if needed."""
