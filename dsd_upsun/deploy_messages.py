@@ -18,7 +18,7 @@ The --automate-all flag means the deploy command will:
 - Open your deployed project in a new browser tab.
 """
 
-cancel_plsh = """
+cancel_upsun = """
 Okay, cancelling Upsun deployment.
 """
 
@@ -35,7 +35,7 @@ You can log in from  the command line:
   $ platform login
 """
 
-plsh_settings_found = """
+upsun_settings_found = """
 There is already an Upsun-specific settings block in settings.py. Is it okay to
 overwrite this block, and everything that follows in settings.py?
 """
