@@ -10,7 +10,7 @@ from django.conf import settings
 confirm_automate_all = """
 The --automate-all flag means the deploy command will:
 - Run `upsun create` for you, to create an empty Upsun project.
-  - This will create a project in the us-3.upsun region. If you wish
+  - This will create a project in the us-3.platform.sh region. If you wish
     to use a different region, cancel this operation and use the --region flag.
   - You can see a list of all regions by running `upsun help project:create`
 - Commit all changes to your project that are necessary for deployment.

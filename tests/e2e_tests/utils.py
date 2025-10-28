@@ -30,7 +30,7 @@ def create_project():
     org_output = make_sp_call("upsun org:info", capture_output=True).stdout.decode()
     org_id = re.search(r"([A-Z0-9]{26})", org_output).group(1)
     print(f"  Found Upsun organization id: {org_id}")
-    create_cmd = f"upsun create --title my_blog_project --org {org_id} --region us-3.upsun --yes"
+    create_cmd = f"upsun create --title my_blog_project --org {org_id} --region us-3.platform.sh --yes"
 
     make_sp_call(create_cmd)
 
