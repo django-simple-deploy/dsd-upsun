@@ -1,7 +1,7 @@
 # This file describes an application. You can have multiple applications
 # in the same project.
 #
-# See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
+# See https://fixed.docs.upsun.com/create-apps.html
 
 # The name of this app. Must be unique within a project.
 name: '{{ deployed_project_name }}'
@@ -20,7 +20,7 @@ relationships:
 # The configuration of app when it is exposed to the web.
 web:
     # Whether your app should speak to the webserver via TCP or Unix socket
-    # https://docs.platform.sh/configuration/app-containers.html#upstream
+    # https://fixed.docs.upsun.com/guides/django/deploy/configure.html#how-to-start-your-app
     upstream:
         socket_family: unix
     # Commands are run once after deployment to start the application process.

@@ -24,7 +24,7 @@ Okay, cancelling Upsun deployment.
 
 cli_not_installed = """
 In order to deploy to Upsun, you need to install the Upsun CLI.
-  See here: https://docs.upsun/gettingstarted/introduction/template/cli-requirements.html
+  See here: https://docs.upsun.com/administration/cli.html
 After installing the CLI, you can run the deploy command again.
 """
 
@@ -198,7 +198,7 @@ def success_msg_automate_all(deployed_url):
 
         Also, if you haven't already done so you should review the
         documentation for Python deployments on Upsun at:
-        - https://docs.upsun/languages/python.html
+        - https://fixed.docs.upsun.com/languages/python.html
         - This documentation will help you understand how to maintain
           your deployment.
 
