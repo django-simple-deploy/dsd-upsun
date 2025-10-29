@@ -33,9 +33,7 @@ class PlatformDeployer:
 
     def deploy(self, *args, **options):
         """Coordinate the overall configuration and deployment."""
-        plugin_utils.write_output(
-            "\nConfiguring project for deployment to Upsun..."
-        )
+        plugin_utils.write_output("\nConfiguring project for deployment to Upsun...")
 
         self._validate_platform()
 
@@ -171,10 +169,14 @@ class PlatformDeployer:
         """Set the DJANGO_SETTINGS_MODULE env var, if needed."""
         # This is primarily for Wagtail projects, as signified by a settings/production.py file.
         if dsd_config.settings_path.parts[-2:] == ("settings", "production.py"):
-            plugin_utils.write_output("  Setting DJANGO_SETTINGS_MODULE environment variable...")
+            plugin_utils.write_output(
+                "  Setting DJANGO_SETTINGS_MODULE environment variable..."
+            )
 
             # Need form mysite.settings.production
-            dotted_settings_path = ".".join(dsd_config.settings_path.parts[-3:]).removesuffix(".py")
+            dotted_settings_path = ".".join(
+                dsd_config.settings_path.parts[-3:]
+            ).removesuffix(".py")
 
             cmd = f"upsun variable:create --level environment --environment main --name DJANGO_SETTINGS_MODULE --value {dotted_settings_path} --no-interaction --visible-build true --prefix env"
             output = plugin_utils.run_quick_command(cmd)
