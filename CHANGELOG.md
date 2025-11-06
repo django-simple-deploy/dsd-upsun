@@ -1,6 +1,13 @@
 Changelog: dsd-upsun
 ===
 
+### (Unreleased)
+
+#### External changes
+
+- Shows correct error message when the Upsun CLI is not installed.
+- Messages show `upsun` as the command to use, not `platform`.
+
 ### 0.1.0
 
 #### External changes
