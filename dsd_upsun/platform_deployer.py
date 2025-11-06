@@ -256,13 +256,17 @@ class PlatformDeployer:
         """Make sure the Upsun CLI is installed, and user is authenticated."""
         cmd = "upsun --version"
 
-        # This generates a FileNotFoundError on Ubuntu if the CLI is not installed.
+        # This generates a FileNotFoundError on macOS and Linux if the CLI is not installed.
         try:
             output_obj = plugin_utils.run_quick_command(cmd)
         except FileNotFoundError:
             raise DSDCommandError(upsun_msgs.cli_not_installed)
 
         plugin_utils.log_info(output_obj)
+        if sys.platform == "win32":
+            stderr = output_obj.stderr.decode(encoding="utf-8")
+            if "'upsun' is not recognized as an internal or external command" in stderr:
+                raise DSDCommandError(upsun_msgs.cli_not_installed)
 
         # Check that the user is authenticated.
         cmd = "upsun auth:info --no-interaction"

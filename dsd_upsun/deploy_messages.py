@@ -33,7 +33,7 @@ cli_logged_out = """
 You are currently logged out of the Upsun CLI. Please log in,
   and then run the deploy command again.
 You can log in from  the command line:
-  $ platform login
+  $ upsun login
 """
 
 upsun_settings_found = """
@@ -50,10 +50,10 @@ the deploy command again.
 no_project_name = """
 An Upsun project name could not be found.
 
-The deploy command expects that you've already run `platform create`, or
+The deploy command expects that you've already run `upsun create`, or
 associated the local project with an existing project on Upsun.
 
-If you haven't done so, run the `platform create` command and then run
+If you haven't done so, run the `upsun create` command and then run
 the deploy command again. You can override this warning by using
 the `--deployed-project-name` flag to specify the name you want to use for the
 project. This must match the name of your Upsun project.
@@ -66,8 +66,8 @@ You may have created an Upsun account, but not created an organization.
 The Upsun CLI requires an organization name when creating a new project.
 
 Please visit the Upsun console and make sure you have created an organization.
-You can also do this through the CLI using the `platform organization:create` command.
-For help, run `platform help organization:create`.
+You can also do this through the CLI using the `upsun organization:create` command.
+For help, run `upsun help organization:create`.
 """
 
 no_org_available = """
@@ -77,7 +77,7 @@ you'd like to use, and then try again.
 
 login_required = """
 You appear to be logged out of the Upsun CLI. Please run the 
-command `platform login`, and then run the deploy command again.
+command `upsun login`, and then run the deploy command again.
 
 You may be able to override this error by passing the `--deployed-project-name`
 flag.
@@ -118,7 +118,7 @@ def confirm_use_org(org_name):
 
 
 def unknown_create_error(e):
-    """Process a non-specific error when running `platform create`
+    """Process a non-specific error when running `upsun create`
     while using automate_all. This is most likely an issue with the user
     not having permission to create a new project, for example because they
     are on a trial plan and have already created too many projects.
@@ -128,7 +128,7 @@ def unknown_create_error(e):
         f"""
         --- An error has occurred when trying to create a new Upsun project. ---
 
-        While running `platform create`, an error has occurred. You should check
+        While running `upsun create`, an error has occurred. You should check
         the Upsun console to see if a project was partially created.
 
         The error messages that Upsun provides, both through the CLI and
@@ -139,7 +139,7 @@ def unknown_create_error(e):
         There is no information about specific limits, and how to address them.
 
         The following output may help diagnose the error:
-        ***** output of `platform create` *****
+        ***** output of `upsun create` *****
 
         {e.stderr.decode()}
 
@@ -163,13 +163,13 @@ def success_msg(log_output=""):
             $ git add .
             $ git commit -am "Configured project for deployment."
         - Push your project to Upsun' servers:
-            $ platform push
+            $ upsun push
         - Open your project:
-            $ platform url    
+            $ upsun url    
         - As you develop your project further:
             - Make local changes
             - Commit your local changes
-            - Run `platform push`
+            - Run `upsun push`
     """
     )
 
@@ -195,7 +195,7 @@ def success_msg_automate_all(deployed_url):
         - You can also visit your project at {deployed_url}
 
         If you make further changes and want to push them to Upsun,
-        commit your changes and then run `platform push`.
+        commit your changes and then run `upsun push`.
 
         Also, if you haven't already done so you should review the
         documentation for Python deployments on Upsun at:
