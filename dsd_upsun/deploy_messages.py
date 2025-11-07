@@ -91,7 +91,7 @@ may_configure = """
 You may want to re-run the deploy command without the --automate-all flag.
 
 You will have to create the Upsun project yourself, but django-simple-deploy
-will do all of the necessary configuration for deployment.
+will do all the necessary configuration for deployment.
 """
 
 
@@ -132,11 +132,7 @@ def unknown_create_error(e):
         the Upsun console to see if a project was partially created.
 
         The error messages that Upsun provides, both through the CLI and
-        the console, are not always specific enough to be helpful. For example, 
-        newer users are limited to two new projects in a 24-hour period, or something
-        like that. But if you try to create an additional project, you only get
-        a message that says: "You do not have access to create a new Subscriptions resource".
-        There is no information about specific limits, and how to address them.
+        the console, are not always specific enough to be helpful.
 
         The following output may help diagnose the error:
         ***** output of `upsun create` *****
