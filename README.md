@@ -8,9 +8,9 @@ This is an officially supported plugin, so the full documentation for dsd-upsun 
 Upsun documentation
 ---
 
-The home page for the [Upsun docs](https://devcenter.upsun.com) is good, but it can be hard to know where to look for Django-specific docs at first. Here are some helpful links to be aware of, whether you're deploying a project to Upsun or working on this plugin.
+The home page for the [Upsun docs](https://devcenter.upsun.com) is a good starting point, but it can be hard to know where to look for Django-specific information. Here are some helpful links to be aware of, whether you're deploying a project to Upsun or helping maintain this plugin.
 
-Upsun has two approaches to deployment: Fixed and Flex. With a Fixed plan, you specify the size of the resources you want to use for your project. With a Flex plan, you push your project and Upsun provisions appropriately sized resources depending on your usage patterns.
+Upsun has two approaches to deployment: Fixed and Flex. With a Fixed plan, you specify the size of the resources you want to use for your project. When your project grows, you'll need to upgrade to a higher Fixed plan. With a Flex plan, you can select from a wider variety of specific resource sizes. When your project grows you can scale individual resources yourself, or you can let Upsun scale resources for you.
 
 Currently, dsd-upsun only supports Fixed deployments. The roadmap includes a plan to add support for both Fixed and Flex deployments.
 
