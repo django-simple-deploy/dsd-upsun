@@ -1,7 +1,9 @@
 dsd-upsun
 ===
 
-dsd-upsun is a plugin for deploying Django projects to [Upsun](https://upsun.com) (formerly Platform.sh), using django-simple-deploy. This is an officially supported plugin, so the documentation is included in the [django-simple-deploy](https://django-simple-deploy.readthedocs.io/en/latest/) docs.
+dsd-upsun is a plugin for deploying Django projects to [Upsun](https://upsun.com) (formerly Platform.sh), using django-simple-deploy.
+
+This is an officially supported plugin, so the full documentation for dsd-upsun is included in the [django-simple-deploy](https://django-simple-deploy.readthedocs.io/en/latest/) docs. The Quick Start page for Upsun is [here](https://django-simple-deploy.readthedocs.io/en/latest/quick_starts/quick_start_upsun/).
 
 Upsun documentation
 ---
@@ -12,8 +14,10 @@ Upsun has two approaches to deployment: Fixed and Flex. With a Fixed plan, you s
 
 Currently, dsd-upsun only supports Fixed deployments. The roadmap includes a plan to add support for both Fixed and Flex deployments.
 
+### Fixed docs
 
-Here's the main page for [Fixed](https://fixed.docs.upsun.com) deployments. Other relevant pages:
+
+The main documentation page for Fixed deployments is [here](https://fixed.docs.upsun.com). Other relevant pages include:
 
 - [Fixed philosophy](https://fixed.docs.upsun.com/learn/overview/philosophy.html)
 - [Python on Upsun Fixed](https://fixed.docs.upsun.com/languages/python.html)
@@ -22,7 +26,7 @@ Here's the main page for [Fixed](https://fixed.docs.upsun.com) deployments. Othe
 - [Django configuration](https://fixed.docs.upsun.com/guides/django/deploy/customize.html#django-configuration)
 - [Configure Django for Upsun Fixed](https://fixed.docs.upsun.com/guides/django/deploy/configure.html)
 
-Here's the main page for [Flex](https://docs.upsun.com) docs. Other relevant pages:
+The main page for Flex deployments is [here](https://docs.upsun.com). Other relevant pages include:
 
 - [Operational maturity for Django](https://upsun.com/django/)
 - [Deploy Django on Upsun Flex](https://docs.upsun.com/get-started/stacks/django.html)
