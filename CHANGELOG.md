@@ -1,9 +1,9 @@
 Changelog: dsd-upsun
 ===
 
-### 0.8.0
+### 1.2.0
 
-The version is jumping to 0.8.0, because dsd-platformsh was already at 1.0. We're pretty close to 1.0, and I want the version number to indicate that more clearly than a 0.2.0 release would.
+The version is jumping to 1.2.0, because the dsd-platformsh plugin that this is based on already had a 1.1.0 release.
 
 #### External changes
 
