@@ -72,6 +72,16 @@ class PlatformDeployer:
                 f"Deployed project name: {self.deployed_project_name}"
             )
             return
+        
+        # There's an apparent bug in the Upsun CLI that causes the .upsun/local/
+        # dir to not be ignored on Windows like it is on other OSes. We can fix
+        # that ourselves until Upsun updates their CLI.
+        # In the configuration-only approach, the user has already run
+        # `upsun create`, so we'll try that fix here. This avoids the user running
+        # `manage.py deploy` with an unclean Git status.
+        breakpoint()
+        if (msg_fixed := upsun_utils.fix_git_exclude_bug()):
+            plugin_utils.write_output(msg_fixed)
 
         self._check_upsun_settings()
         self._validate_cli()
@@ -278,16 +288,6 @@ class PlatformDeployer:
 
         if "Authentication is required." in output_obj.stderr.decode():
             raise DSDCommandError(upsun_msgs.cli_logged_out)
-
-        # There's an apparent bug in the Upsun CLI that causes the .upsun/local/
-        # dir to not be ignored on Windows like it is on other OSes. We can fix
-        # that ourselves until Upsun updates their CLI.
-        # In the configuration-only approach, the user has already run
-        # `upsun create`, so we'll try that fix here. This avoids the user running
-        # `manage.py deploy` with an unclean Git status.
-        if (msg_fixed := upsun_utils.fix_git_exclude_bug()):
-            plugin_utils.write_output(msg_fixed)
-
 
     def _get_upsun_project_name(self):
         """Get the deployed project name.
