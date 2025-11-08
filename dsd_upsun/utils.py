@@ -1,6 +1,7 @@
 """Utilities specific to Upsun deployments."""
 
 from pathlib import Path
+import sys
 
 
 def get_project_name(output_str):
@@ -59,7 +60,7 @@ def fix_git_exclude_bug():
         return
     
     exclude_text = path_exclude.read_text()
-    exclude_text_fixed = exclude_text.replace("/.upsun\local", "/.upsun/local")
+    exclude_text_fixed = exclude_text.replace(r"/.upsun\local", r"/.upsun/local")
 
     if exclude_text_fixed != exclude_text:
         path_exclude.write_text(exclude_text_fixed)
