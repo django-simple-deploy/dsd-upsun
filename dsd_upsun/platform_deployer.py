@@ -114,6 +114,10 @@ class PlatformDeployer:
             error_msg = upsun_msgs.unknown_create_error(e)
             raise DSDCommandError(error_msg)
 
+        # Fix bug ignoring .upsun/local on Windows.
+        if (msg_fixed := upsun_utils.fix_git_exclude_bug()):
+            plugin_utils.write_output(msg_fixed)
+
     def _modify_settings(self):
         """Add upsun-specific settings.
 
@@ -281,7 +285,9 @@ class PlatformDeployer:
         # In the configuration-only approach, the user has already run
         # `upsun create`, so we'll try that fix here. This avoids the user running
         # `manage.py deploy` with an unclean Git status.
-        upsun_utils.fix_git_exclude_bug()
+        if (msg_fixed := upsun_utils.fix_git_exclude_bug()):
+            plugin_utils.write_output(msg_fixed)
+
 
     def _get_upsun_project_name(self):
         """Get the deployed project name.
