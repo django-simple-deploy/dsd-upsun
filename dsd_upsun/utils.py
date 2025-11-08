@@ -63,4 +63,4 @@ def fix_git_exclude_bug():
 
     if exclude_text_fixed != exclude_text:
         path_exclude.write_text(exclude_text_fixed)
-        return "Fixed /.upsun/local entry in .git\info\exclude file."
+        return "Fixed /.upsun/local entry in .git/info/exclude file."
