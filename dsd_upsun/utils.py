@@ -1,5 +1,7 @@
 """Utilities specific to Upsun deployments."""
 
+from pathlib import Path
+
 
 def get_project_name(output_str):
     """Get the project name from the output of `upsun project:info`.
@@ -34,3 +36,31 @@ def get_org_names(output_str):
 
     lines = output_str.split("\n")[1:]
     return [line.split(",")[0] for line in lines if line]
+
+
+def fix_git_exclude_bug():
+    """Fix the bug where .upsun/local/ is not ignored on Windows.
+
+    See: https://github.com/platformsh/cli/issues/286
+
+    Returns:
+        Str: confirmation message if bug was fixed
+        None: if no changes were made
+    """
+    if sys.platform != "win32":
+        return
+
+    path_upsun_local = Path(".upsun") / "local"
+    if not path_upsun_local.exists():
+        return
+    
+    path_exclude = Path(".git") / "info" / "exclude"
+    if not path_exclude.exists():
+        return
+    
+    exclude_text = path_exclude.read_text()
+    exclude_text_fixed = exclude_text.replace("/.upsun\local", "/.upsun/local")
+
+    if exclude_text_fixed != exclude_text:
+        path_exclude.write_text(exclude_text_fixed)
+        return "Fixed /.upsun/local entry in .git\info\exclude file."
