@@ -352,8 +352,11 @@ class PlatformDeployer:
         This is needed for creating a project using automate_all.
         Confirm that it's okay to use this org.
 
+        Note: In the csv output, Upsun refers to the alphanumeric ID as a Name,
+        and the user-provided name as a Label. This gets confusing. :/
+
         Returns:
-            str: org name
+            str: org name (id)
             None: if not using automate-all
         Raises:
             DSDCommandError:
@@ -368,7 +371,8 @@ class PlatformDeployer:
         output_str = output_obj.stdout.decode()
         plugin_utils.log_info(output_str)
 
-        org_names = upsun_utils.get_org_names(output_str)
+        org_ids, org_names = upsun_utils.get_org_ids_names(output_str)
+
         if not org_names:
             raise DSDCommandError(upsun_msgs.org_not_found)
 
@@ -376,13 +380,14 @@ class PlatformDeployer:
             # Get permission to use this org.
             org_name = org_names[0]
             if self._confirm_use_org(org_name):
-                return org_name
+                # Return the corresponding ID, not the name.
+                return org_ids[0]
 
-        # Show all orgs, ask user to make selection.
-        prompt = "\n*** Found multiple orgs on Upsun. ***"
+        # Show all org names, ask user to make selection.
+        prompt = "\n*** Found multiple organizations on Upsun. ***\n"
         for index, name in enumerate(org_names):
             prompt += f"\n  {index}: {name}"
-        prompt += "\nWhich org would you like to use? "
+        prompt += "\n\nWhich organization would you like to use? "
 
         valid_choices = [i for i in range(len(org_names))]
 
@@ -398,7 +403,8 @@ class PlatformDeployer:
             confirm_prompt += " Is that correct?"
             confirmed = plugin_utils.get_confirmation(confirm_prompt)
 
-            return selected_org
+            # Return corresponding ID, not the name.
+            return org_ids[selection]
 
     def _confirm_use_org(self, org_name):
         """Confirm that it's okay to use the org that was found.
