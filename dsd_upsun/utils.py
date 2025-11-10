@@ -36,7 +36,13 @@ def get_org_names(output_str):
         return None
 
     lines = output_str.split("\n")[1:]
-    return [line.split(",")[0] for line in lines if line]
+    # Build names like this: "<org-id> <org-label> (<flexible|fixed>)"
+    org_names = [
+        f"{line.split(",")[0]}\t{line.split(",")[1]}\t({line.split(",")[2]})"
+        for line in lines
+        if line
+    ]
+    return org_names
 
 
 def fix_git_exclude_bug():
