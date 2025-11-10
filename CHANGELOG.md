@@ -6,6 +6,7 @@ Changelog: dsd-upsun
 #### External changes
 
 - The dialog for selecting which organization shows the org name, ID, and whether it's a Flex or Fixed org. This makes it much easier to select the appropriate org for users who have multiple orgs. New Upsun accounts have a default Flex plan, so all new users trying to make a Fixed deployment will likely have at least two orgs.
+- Typo fix in success message: "Upsun' servers" -> "Upsun's servers"
 
 #### Internal changes
 
