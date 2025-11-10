@@ -158,7 +158,7 @@ def success_msg(log_output=""):
             $ git status
             $ git add .
             $ git commit -am "Configured project for deployment."
-        - Push your project to Upsun' servers:
+        - Push your project to Upsun's servers:
             $ upsun push
         - Open your project:
             $ upsun url    
