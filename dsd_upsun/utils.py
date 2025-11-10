@@ -20,8 +20,8 @@ def get_project_name(output_str):
     return project_name
 
 
-def get_org_names(output_str):
-    """Get org names from output of `upsun organization:list --yes --format csv`.
+def get_org_ids_names(output_str):
+    """Get org ids and names from output of `upsun organization:list --yes --format csv`.
 
     Sample input:
         Name,Label,Owner email
@@ -29,14 +29,24 @@ def get_org_names(output_str):
         <org-name-2>,<org-label-2>,<org-owner-2@example.com>
 
     Returns:
-        list: [str]
+        tuple: list, list
         None: If user has no organizations.
     """
     if "No organizations found." in output_str:
         return None
 
     lines = output_str.split("\n")[1:]
-    return [line.split(",")[0] for line in lines if line]
+
+    org_ids = [line.split(",")[0] for line in lines if line]
+
+    # Build descriptive names like this: "<org-id> <org-label> (<flexible|fixed>)"
+    org_names = [
+        f"{line.split(",")[0]} {line.split(",")[1]} ({line.split(",")[2]})"
+        for line in lines
+        if line
+    ]
+
+    return org_ids, org_names
 
 
 def fix_git_exclude_bug():
