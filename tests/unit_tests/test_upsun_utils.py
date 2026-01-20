@@ -24,7 +24,7 @@ def test_get_org_names():
         To create a new organization, run: upsun org:create"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
+    org_names = upsun_utils.get_org_ids_names(output_str)
     assert org_names is None
 
     # One org.
@@ -34,7 +34,8 @@ def test_get_org_names():
         username-name,username-label,username@example.com"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
+    org_names = upsun_utils.get_org_ids_names(output_str)
+    breakpoint()
     assert org_names == ["username-name"]
 
     # Two orgs.
@@ -45,5 +46,5 @@ def test_get_org_names():
         org_name_2,org_label_2,org_owner_2@example.com"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
+    org_names = upsun_utils.get_org_ids_names(output_str)
     assert org_names == ["org_name", "org_name_2"]

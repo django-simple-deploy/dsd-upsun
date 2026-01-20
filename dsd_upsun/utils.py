@@ -28,6 +28,11 @@ def get_org_ids_names(output_str):
         <org-name>,<org-label>,<org-owner@example.com>
         <org-name-2>,<org-label-2>,<org-owner-2@example.com>
 
+    Sample input (January 2026):
+        Name,Label,Type,Owner email
+        <org-name>,<org-label>,<org-type>,<org-owner@example.com>
+        <org-name-2>,<org-label-2>,<org-type-2>,<org-owner-2@example.com>
+
     Returns:
         tuple: list, list
         None: If user has no organizations.
