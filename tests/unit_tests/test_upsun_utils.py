@@ -24,26 +24,26 @@ def test_get_org_names():
         To create a new organization, run: upsun org:create"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
+    org_names = upsun_utils.get_org_ids_names(output_str)
     assert org_names is None
 
     # One org.
     output_str = dedent(
         """\
-        Name,Label,Owner email
-        username-name,username-label,username@example.com"""
+        Name,Label,Type,Owner email
+        username-name,username-label,org-type,username@example.com"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
-    assert org_names == ["username-name"]
+    org_names = upsun_utils.get_org_ids_names(output_str)
+    assert org_names[0] == ["username-name"]
 
     # Two orgs.
     output_str = dedent(
         """\
-        Name,Label,Owner email
-        org_name,org_label,org_owner@example.com
-        org_name_2,org_label_2,org_owner_2@example.com"""
+        Name,Label,Type,Owner email
+        org_name,org_label,org_type,org_owner@example.com
+        org_name_2,org_label_2,org_type_2,org_owner_2@example.com"""
     )
 
-    org_names = upsun_utils.get_org_names(output_str)
-    assert org_names == ["org_name", "org_name_2"]
+    org_names = upsun_utils.get_org_ids_names(output_str)
+    assert org_names[0] == ["org_name", "org_name_2"]

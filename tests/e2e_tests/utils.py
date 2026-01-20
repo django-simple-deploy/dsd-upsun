@@ -13,13 +13,17 @@ def check_logged_in():
     auth_info_output = make_sp_call(
         "upsun auth:info --no-interaction", capture_output=True
     )
-    if "LoginRequiredException" in auth_info_output.stderr.decode():
-        msg = "\n----- Error: Not logged in through CLI -----"
-        msg += "\nPlease log in to the Upsun CLI and then run the e2e test."
-        msg += "\n  You can log in with the command: upsun login"
-        msg += "\n-----\n"
-        print(msg)
 
+    # Check that we can find a user ID in the output.
+    # Checking for this line (sample data)
+    # | id                    | 87vr8ehb-rg9e-shg8-9hse-r8oghseo89hr |
+    re_user_id = r"\n\| id\s*\| ([\w\-]*)\s*\|"
+    stdout = auth_info_output.stdout.decode()
+    m = re.search(re_user_id, stdout)
+    if not m:
+        # Print for immediate output, and include in pytest's exit message as well.
+        print("  You are not currently running an authenticated CLI session.")
+        print("  Please run `upsun login` and then run e2e tests.")
         exit_msg = "Please run `upsun login` and then run e2e tests."
         pytest.exit(exit_msg)
 
