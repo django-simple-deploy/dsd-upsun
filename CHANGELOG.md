@@ -1,6 +1,18 @@
 Changelog: dsd-upsun
 ===
 
+### (Unreleased)
+
+#### External changes
+
+- N/A
+
+#### Internal changes
+
+- When running e2e tests, check that user is logged in, instead of checking they're not logged out.
+- Avoid double-logging project:info command.
+- Update unit test for getting org names.
+
 ### 1.2.1
 
 #### External changes
