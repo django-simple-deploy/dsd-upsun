@@ -304,13 +304,11 @@ class PlatformDeployer:
 
         # Use --yes flag to avoid interactive prompt hanging in background
         #   if the user is not currently logged in to the CLI.
+        # Log cmd, but don't log the output of `project:info`. It contains identifying
+        #   information about the user and project, including client_ssh_key.
         cmd = "upsun project:info --yes --format csv"
         output_obj = plugin_utils.run_quick_command(cmd)
         output_str = output_obj.stdout.decode()
-
-        # Log cmd, but don't log the output of `project:info`. It contains identifying
-        # information about the user and project, including client_ssh_key.
-        plugin_utils.log_info(cmd)
 
         # If there's no stdout, the user is probably logged out, hasn't called
         #   create, or doesn't have the CLI installed.
