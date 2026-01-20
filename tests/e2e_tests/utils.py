@@ -21,6 +21,9 @@ def check_logged_in():
     stdout = auth_info_output.stdout.decode()
     m = re.search(re_user_id, stdout)
     if not m:
+        # Print for immediate output, and include in pytest's exit message as well.
+        print("  You are not currently running an authenticated CLI session.")
+        print("  Please run `upsun login` and then run e2e tests.")
         exit_msg = "Please run `upsun login` and then run e2e tests."
         pytest.exit(exit_msg)
 
